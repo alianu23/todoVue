@@ -22,7 +22,7 @@
         >
           Add
         </button>
-        <p v-else class="text-orange-700">List completed</p>
+        <p v-else class="text-orange-700">Жагсаалт дүүрсэн байна</p>
       </div>
       <div class="mt-3 sm:mt-5">
         <div class="mt-2" v-for="(task, index) in tasks" :key="index">
@@ -39,7 +39,7 @@
                 class="bg-slate-300 py-2 px-4 rounded-md"
                 @click="deleteTask(index)"
               >
-                Delete
+                Устгах
               </button>
             </div>
           </div>
@@ -49,7 +49,7 @@
         <div class="flex flex-col justify-center items-center mt-5 gap-3">
           <div>
             <p class="text-lg text-orange-300" v-show="pendingTasks > 0">
-              * You have {{ pendingTasks }} pending tasks
+              * Таны нийт даалгаварын тоо - {{ pendingTasks }}
             </p>
           </div>
           <div>
@@ -59,7 +59,7 @@
               @click="deleteAllTasks"
               v-show="tasks.length > 0"
             >
-              Delete All
+              Бүх даалгаварийг устгах
             </button>
           </div>
         </div>
@@ -68,7 +68,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, onMounted, computed, watch } from "vue";
 
 export default {
@@ -76,10 +76,7 @@ export default {
 
   setup() {
     const newTask = ref("");
-    const tasks = ref([
-      { description: "Review pending activities", isDone: false },
-      { description: "Attend daily meetings", isDone: false },
-    ]);
+    const tasks = ref([{ description: "", isDone: false }]);
 
     const addTask = () => {
       if (!newTask.value) return;
@@ -102,15 +99,15 @@ export default {
     };
 
     const pendingTasks = computed(() => {
-      return tasks.value.filter((x) => x.isDone === false).length;
+      return tasks.value.filter((e) => e.isDone === false).length;
     });
 
     watch(
       tasks,
       () => {
-        if (tasks.value.length > 10) {
+        if (tasks.value.length >= 10) {
           alert(
-            "New task limit - 10. You need to finish old tasks or delete it"
+            "Жагсаалтын хязгаар 10т хүрлээ. Та өмнөх даалгавараа дуугаж устгана уу?"
           );
         }
       },
