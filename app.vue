@@ -19,7 +19,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: antiquewhite;
+  background-color: black;
   display: flex;
   justify-content: center;
   align-items: start;

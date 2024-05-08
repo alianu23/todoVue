@@ -1,91 +1,79 @@
 <!-- Html -->
 <template>
   <div class="container flex justify-center items-center">
-    <div class="card mt-3 col-span-6">
-      <div class="card-body">
-        <h1 class="text-center">Task List</h1>
-        <div
-          class="d-flex flex-column flex-sm-row justify-content-between mt-3 mt-sm-5"
+    <div class="flex flex-col gap-1">
+      <h1 class="text-center text-2xl text-slate-200">Create Todo List</h1>
+      <div
+        class="flex flex-row justify-between mt-3 sm:mt-5 items-center gap-4"
+      >
+        <input
+          type="text"
+          class="py-2 px-4 rounded-md"
+          placeholder="Add a new task..."
+          v-model="newTask"
+          @keyup.enter="addTask"
+          :disabled="tasks.length >= 10"
+        />
+        <button
+          type="button"
+          class="bg-green-300 py-2 px-4 rounded-md"
+          @click="addTask"
+          v-if="tasks.length <= 9"
         >
-          <div class="col-sm-9">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Add a new task..."
-              v-model="newTask"
-              @keyup.enter="addTask"
-              :disabled="tasks.length > 10"
-            />
-          </div>
-          <div class="mt-3 mt-sm-0">
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="addTask"
-              v-if="tasks.length <= 10"
-            >
-              Add
-            </button>
-            <p v-else class="message">List completed</p>
-          </div>
-        </div>
-        <div class="mt-3 mt-sm-5">
-          <div
-            class="card item-card mt-2"
-            v-for="(task, index) in tasks"
-            :key="index"
-          >
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="task.isDone"
-                />
-                <div>
-                  <p class="fw-semibold">{{ task.description }}</p>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    @click="deleteTask(index)"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="d-flex flex-column flex-sm-row justify-content-between">
+          Add
+        </button>
+        <p v-else class="text-orange-700">List completed</p>
+      </div>
+      <div class="mt-3 sm:mt-5">
+        <div class="mt-2" v-for="(task, index) in tasks" :key="index">
+          <div class="flex justify-between items-center">
+            <input class="bg-slate-300" type="checkbox" v-model="task.isDone" />
             <div>
-              <p class="fw-bold" v-show="pendingTasks > 1">
-                You have {{ pendingTasks }} pending tasks
+              <p class="font-semibold text-slate-200">
+                {{ task.description }}
               </p>
             </div>
             <div>
               <button
                 type="button"
-                class="btn btn-warning"
-                @click="deleteAllTasks"
-                v-show="tasks.length > 0"
+                class="bg-slate-300 py-2 px-4 rounded-md"
+                @click="deleteTask(index)"
               >
-                Delete All
+                Delete
               </button>
             </div>
+          </div>
+        </div>
+
+        <hr />
+        <div class="flex flex-col justify-center items-center mt-5 gap-3">
+          <div>
+            <p class="text-lg text-orange-300" v-show="pendingTasks > 0">
+              * You have {{ pendingTasks }} pending tasks
+            </p>
+          </div>
+          <div>
+            <button
+              type="button"
+              class="bg-red-400 py-2 px-4 rounded-md"
+              @click="deleteAllTasks"
+              v-show="tasks.length > 0"
+            >
+              Delete All
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<!-- Javascript -->
+
 <script>
 import { ref, onMounted, computed, watch } from "vue";
 
 export default {
   name: "HomePage",
+
   setup() {
     const newTask = ref("");
     const tasks = ref([
@@ -121,7 +109,9 @@ export default {
       tasks,
       () => {
         if (tasks.value.length > 10) {
-          alert("You have reached the maximum number of possible tasks (10)");
+          alert(
+            "New task limit - 10. You need to finish old tasks or delete it"
+          );
         }
       },
       { deep: true }
