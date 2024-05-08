@@ -76,7 +76,9 @@ export default {
 
   setup() {
     const newTask = ref("");
-    const tasks = ref([{ description: "", isDone: false }]);
+    const tasks = ref([
+      { description: "1:30 багийн уулзалттай", isDone: false },
+    ]);
 
     const addTask = () => {
       if (!newTask.value) return;
