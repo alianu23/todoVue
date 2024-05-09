@@ -73,7 +73,6 @@ import { ref, onMounted, computed, watch } from "vue";
 
 export default {
   name: "HomePage",
-
   setup() {
     const newTask = ref("");
     const tasks = ref([
@@ -90,7 +89,7 @@ export default {
       newTask.value = "";
     };
 
-    const deleteTask = (index) => {
+    const deleteTask = (index: number) => {
       tasks.value.splice(index, 1);
       localStorage.setItem("tasks", JSON.stringify(tasks.value));
     };
