@@ -116,8 +116,9 @@ export default {
     );
 
     onMounted(() => {
-      if (localStorage.tasks) {
-        tasks.value = JSON.parse(localStorage.getItem("tasks")) || [];
+      const storedTasks = localStorage.getItem("tasks");
+      if (storedTasks !== null) {
+        tasks.value = JSON.parse(storedTasks);
       }
     });
 
